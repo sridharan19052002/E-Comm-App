@@ -1,0 +1,47 @@
+package org.ecom.app.service;
+
+import java.util.Optional;
+
+import org.ecom.app.dao.merchant_dao;
+import org.ecom.app.dto.ResponseStructure;
+import org.ecom.app.exception.IdNotFoundException;
+import org.ecom.app.model.merchant;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+@Service
+public class merchant_service {
+
+	@Autowired
+	public merchant_dao m_dao;
+	
+	public ResponseStructure<merchant> save_merchant(merchant m)
+	{
+	    ResponseStructure<merchant> str=new ResponseStructure<>();
+	    str.setMessage("Merchant saved sucessfully");
+	    str.setData(m_dao.save_merchant(m));
+	    str.setStatuscode(HttpStatus.CREATED.value());
+	    
+	    return str;
+	}
+	public ResponseEntity<ResponseStructure<merchant>> find_by_id(int id)
+	{
+		ResponseStructure<merchant> str=new ResponseStructure<>();
+		Optional<merchant> opt=m_dao.find_by_id(id);
+		if(opt.isPresent())
+		{
+			str.setMessage("Merchant found");
+			str.setData(opt.get());
+			str.setStatuscode(HttpStatus.OK.value());
+			
+			return new ResponseEntity<ResponseStructure<merchant>>(str,HttpStatus.OK);
+		}
+		throw new IdNotFoundException();
+	}
+	public void update_merchant()
+	{
+		
+	}
+}

@@ -1,0 +1,5 @@
+package org.ecom.app.dao;
+
+public class merchant_dao {
+
+}

@@ -1,0 +1,34 @@
+package org.ecom.app.dao;
+
+import java.util.Optional;
+
+import org.ecom.app.model.merchant;
+import org.ecom.app.repository.merchant_repo;
+import org.ecom.app.repository.user_repo;
+import org.springframework.stereotype.Repository;
+@Repository
+public class user_dao {
+
+	public user_repo u_repo;
+	public merchant save_merchant(merchant m)
+	{
+		return u_repo.save(m);
+	}
+	public Optional<merchant> find_by_id(int id)
+	{
+		return m_repo.findById(id);
+	}
+	public merchant find_merchant_by_email_password(String email,String password)
+	{
+		return m_repo.find_merchant_by_email_password(email, password);
+	}
+	public merchant find_merchant_by_phone_password(long phone,String password)
+	{
+		return m_repo.find_merchant_by_phone_password(phone, password);
+	}
+	public boolean delete_merchant(merchant m)
+	{
+		 m_repo.delete(m);
+		 return true;
+	}
+}

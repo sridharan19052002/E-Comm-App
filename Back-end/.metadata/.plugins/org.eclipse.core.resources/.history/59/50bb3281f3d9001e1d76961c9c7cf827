@@ -1,0 +1,5 @@
+package org.ecom.app.exception;
+
+public class exceptionhandler {
+
+}

@@ -1,0 +1,5 @@
+package org.ecom.app.repository;
+
+public interface merchantrepo {
+
+}
