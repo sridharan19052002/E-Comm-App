@@ -14,8 +14,9 @@ const Merchantlogin = () => {
         axios.get(`http://localhost:8080/merchant/find_merchant_by_email_password?email=${email}&password=${password}`)
         .then((res)=>{
             alert("Login successfully.....")
-            console.log(res.data);
-             navigate("/merchantlanding")
+            console.log(res.data.data);
+            localStorage.setItem("merchant",JSON.stringify(res.data))
+             navigate("/merchanthome")
          })
         .catch((res)=>{ console.log(res.data); alert("Invalid Credentials")})
     }

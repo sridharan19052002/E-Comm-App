@@ -14,7 +14,9 @@ const Userlogin = () => {
       e.preventDefault();
       axios.get(`http://localhost:8080/user/find_user_by_email_password?email=${email}&password=${password}`)
       .then((res)=>{
-           navigate("/userlanding")
+           localStorage.setItem("user",JSON.stringify(res.data.data))
+           alert("login successfully....")
+           navigate("/userhomepage")
        })
       .catch((res)=>{ console.log(res); alert("Invalid Credentials")})
   }

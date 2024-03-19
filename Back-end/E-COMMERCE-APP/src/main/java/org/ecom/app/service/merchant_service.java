@@ -7,10 +7,14 @@ import org.ecom.app.dto.ResponseStructure;
 import org.ecom.app.exception.IdNotFoundException;
 import org.ecom.app.exception.InvalidCredentilalsException;
 import org.ecom.app.model.merchant;
+import org.ecom.app.util.account_status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import jakarta.servlet.http.HttpServletRequest;
+import net.bytebuddy.utility.RandomString;
 
 @Service
 public class merchant_service {
@@ -18,15 +22,45 @@ public class merchant_service {
 	@Autowired
 	public merchant_dao m_dao;
 	
-	public ResponseStructure<merchant> save_merchant(merchant m)
+	@Autowired
+	public email_service es;
+	
+	public ResponseStructure<merchant> save_merchant(merchant m,HttpServletRequest req)
 	{
 	    ResponseStructure<merchant> str=new ResponseStructure<>();
-	    str.setMessage("Merchant saved sucessfully");
+	    
+	    m.setStatus(account_status.IN_ACTIVE.toString());
+	    m.setToken(RandomString.make(10));
+	    	
+	    String message=es.send_mail(m, req);
+	    
+	    str.setMessage("Merchant saved sucessfully"+message);
 	    str.setData(m_dao.save_merchant(m));
 	    str.setStatuscode(HttpStatus.CREATED.value());
 	    
 	    return str;
 	}
+	
+	
+	public ResponseEntity<ResponseStructure<String>> active(String token)
+	{
+		Optional<merchant> opt=m_dao.findByToken(token);
+		ResponseStructure<String> str=new ResponseStructure<>();
+		if(opt.isPresent())
+		{
+			merchant m=opt.get();
+			m.setStatus(account_status.ACTIVE.toString());
+			m.setToken(null);
+			m_dao.save_merchant(m);
+			str.setData("merchant founded");
+			str.setMessage("Account Verified And Activated");
+			str.setStatuscode(HttpStatus.ACCEPTED.value());
+			return new ResponseEntity<ResponseStructure<String>>(str,HttpStatus.ACCEPTED);
+		}
+		throw new InvalidCredentilalsException("Invalid url");
+	}
+	
+	
 	public ResponseEntity<ResponseStructure<merchant>> find_by_id(int id)
 	{
 		ResponseStructure<merchant> str=new ResponseStructure<>();
@@ -68,6 +102,10 @@ public class merchant_service {
 		merchant m=m_dao.find_merchant_by_email_password(emauil, password);
 		if(m!=null)
 		{
+			if(m.getStatus().equals(account_status.IN_ACTIVE.toString()))
+			{
+				throw new IllegalStateException("Account Is Not Active");
+			}
 			str.setMessage("Merchant found with the credentials");
 			str.setData(m);
 			str.setStatuscode(HttpStatus.OK.value());

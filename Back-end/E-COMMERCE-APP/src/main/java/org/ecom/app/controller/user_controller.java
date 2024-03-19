@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping(value = "/user")
 @CrossOrigin
@@ -29,9 +31,9 @@ public class user_controller {
 	public user_service u_service;
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public ResponseStructure<user> save_merchant(@RequestBody user m)
+	public ResponseStructure<user> save_merchant(@RequestBody user m,HttpServletRequest req)
 	{
-		return u_service.save_user(m);
+		return u_service.save_user(m,req);
 	}
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ResponseStructure<user>> find_merchant(@PathVariable int id)
@@ -57,5 +59,10 @@ public class user_controller {
 	public ResponseEntity<ResponseStructure<Boolean>> delete_merchant(@PathVariable int id)
 	{
 		return u_service.delete_user(id);
+	}
+	@GetMapping("/active")
+	public ResponseEntity<ResponseStructure<String>> active(@RequestParam String token)
+	{
+		return u_service.active(token);
 	}
 }

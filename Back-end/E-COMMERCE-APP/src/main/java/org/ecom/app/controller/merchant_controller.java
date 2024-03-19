@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping(value = "/merchant")
 @CrossOrigin(origins="*")
@@ -27,9 +29,9 @@ public class merchant_controller {
 	public merchant_service m_service;
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public ResponseStructure<merchant> save_merchant(@RequestBody merchant m)
+	public ResponseStructure<merchant> save_merchant(@RequestBody merchant m,HttpServletRequest req)
 	{
-		return m_service.save_merchant(m);
+		return m_service.save_merchant(m,req);
 	}
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ResponseStructure<merchant>> find_merchant(@PathVariable int id)
@@ -56,5 +58,9 @@ public class merchant_controller {
 	{
 		return m_service.delete_merchant(id);
 	}
-	
+	@GetMapping("/active")
+	public ResponseEntity<ResponseStructure<String>> active(@RequestParam String token)
+	{
+		return m_service.active(token);
+	}
 }

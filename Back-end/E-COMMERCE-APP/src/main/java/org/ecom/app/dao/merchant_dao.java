@@ -33,4 +33,8 @@ public class merchant_dao {
 		 m_repo.delete(m);
 		 return true;
 	}
+	public Optional<merchant> findByToken(String token)
+	{
+		return m_repo.findByToken(token);
+	}
 }

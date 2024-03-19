@@ -1,10 +1,13 @@
 package org.ecom.app.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 @Entity
@@ -27,4 +30,7 @@ public class user {
 	@Column(nullable = false)
 	private int age;
 	private String status;
+	private String token;
+//	@OneToMany(mappedBy = "u")
+	
 }

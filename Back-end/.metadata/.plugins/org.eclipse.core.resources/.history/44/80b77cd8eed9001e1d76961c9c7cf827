@@ -1,5 +1,0 @@
-package org.ecom.app.dto;
-
-public class ResponseStructure<t> {
-
-}

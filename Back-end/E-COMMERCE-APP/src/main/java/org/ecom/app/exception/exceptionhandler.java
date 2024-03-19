@@ -30,4 +30,23 @@ public class exceptionhandler  extends ResponseEntityExceptionHandler{
 		str.setStatuscode(HttpStatus.NOT_FOUND.value());
 		return new ResponseEntity<ResponseStructure<String>>(str,HttpStatus.NOT_FOUND);
 	}
+	@ExceptionHandler(ProductNotFoundException.class)
+	public ResponseEntity<ResponseStructure<String>> handlePNFE(ProductNotFoundException exception){
+		ResponseStructure<String> structure=new ResponseStructure<>();
+		structure.setMessage(exception.getMessage());
+		structure.setData("Product Not Found");
+		structure.setStatuscode(HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<ResponseStructure<String>>(structure,HttpStatus.NOT_FOUND);
+		
+	}
+	@ExceptionHandler(IllegalStateException.class)
+	public ResponseEntity<ResponseStructure<String>> handleISE(IllegalStateException exception){
+		ResponseStructure<String> structure=new ResponseStructure<>();
+		structure.setMessage(exception.getMessage());
+		structure.setData("Account is not activated");
+		structure.setStatuscode(HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<ResponseStructure<String>>(structure,HttpStatus.NOT_FOUND);
+		
+	}
+
 }

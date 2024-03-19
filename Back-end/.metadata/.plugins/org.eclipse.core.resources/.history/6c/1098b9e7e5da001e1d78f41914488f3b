@@ -1,5 +1,0 @@
-package org.ecom.app.repository;
-
-public interface user_repo {
-
-}

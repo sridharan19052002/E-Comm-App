@@ -1,3 +1,7 @@
+*
+{
+    background-color: beige;
+}
 #Landingpage
 {
     margin-top: 13%;
@@ -7,5 +11,9 @@
 {
     
     margin-left: 27%;
+}
+#Landingpage>a:hover
+{
+    scale: 10px;
 }
 

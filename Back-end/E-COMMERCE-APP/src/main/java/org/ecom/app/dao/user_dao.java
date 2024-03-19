@@ -35,4 +35,8 @@ public class user_dao {
 		 u_repo.delete(m);
 		 return true;
 	}
+	public Optional<user> findByToken(String token)
+	{
+		return u_repo.findByToken(token);
+	}
 }
